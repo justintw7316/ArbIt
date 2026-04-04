@@ -1,0 +1,80 @@
+[tool.poetry]
+name = "arbit"
+version = "0.1.0"
+description = "Guaranteed arbitrage engine for prediction markets"
+authors = ["Smaran Manchala <smaran.manchala@gmail.com>"]
+readme = "README.md"
+packages = [
+    { include = "algorithm" },
+    { include = "simulation" },
+]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+
+# HTTP / API
+httpx = "^0.28"
+aiohttp = "^3.11"
+fastapi = "^0.115"
+uvicorn = { version = "^0.29", extras = ["standard"] }
+
+# Data modeling + validation
+pydantic = "^2.10"
+python-dotenv = "^1.0"
+
+# Storage
+sqlalchemy = "^2.0"
+alembic = "^1.14"
+psycopg2-binary = "^2.9"
+
+# Numerics
+numpy = "^2.2"
+pandas = "^2.2"
+
+# Phase 2 — embeddings + vector search
+# faiss-cpu: no Python 3.14 wheels yet — add when available, or use pgvector
+# tiktoken: no Python 3.14 wheels yet — add when available
+openai = "^1.59"
+sentence-transformers = "^5.1"
+pymongo = "^4.14"
+
+# Phase 4 — regression model
+scikit-learn = "^1.5"
+
+# Phase 5 — scheduling
+apscheduler = "^3.10"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3"
+pytest-asyncio = "^0.25"
+black = "^24.10"
+ruff = "^0.9"
+mypy = "^1.14"
+mongomock = "^4.3"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 100
+target-version = ["py312"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+markers = [
+    "slow: tests that require model downloads or heavier integration setup",
+]
+testpaths = ["tests", "algorithm/Phase_2/tests", "algorithm/Phase_3/tests", "algorithm/Phase_4/tests", "algorithm/Phase_5/tests", "simulation/tests"]

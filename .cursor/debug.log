@@ -1,0 +1,3 @@
+{"hypothesisId": "H1", "location": "backend/main.py:bootstrap", "message": "main.py reached", "data": {"step": "before_third_party_imports"}, "timestamp": 1774770875974}
+{"hypothesisId": "H1", "location": "backend/main.py:bootstrap", "message": "imports_ok", "data": {"step": "after_load_dotenv"}, "timestamp": 1774770876236}
+{"hypothesisId": "H2", "location": "backend/main.py:bootstrap", "message": "FastAPI app constructed", "data": {"title": "ARBX API"}, "timestamp": 1774770876237}

@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ARBX — Full Design Preview</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #030509; color: #e2e8f0; font-family: 'Courier New', monospace; font-size: 13px; padding: 24px; }
+  h1 { color: #ff6b35; font-size: 13px; letter-spacing: 4px; margin-bottom: 6px; }
+  .subtitle { color: #4a5568; font-size: 11px; margin-bottom: 28px; letter-spacing: 1px; }
+
+  /* ── Screen wrapper ── */
+  .screen-label { color: #ff6b35; font-size: 10px; letter-spacing: 3px; margin-bottom: 8px; margin-top: 32px; }
+  .screen-label:first-of-type { margin-top: 0; }
+  .terminal { background: #060810; border: 1px solid #1a2040; width: 100%; overflow: hidden; }
+
+  /* ── Topbar ── */
+  .topbar { background: #060810; border-bottom: 1px solid #1a2040; display: flex; align-items: stretch; }
+  .topbar-brand { padding: 10px 16px; border-right: 1px solid #1a2040; display: flex; align-items: center; gap: 8px; }
+  .topbar-brand .logo { color: #ff6b35; font-size: 13px; font-weight: bold; letter-spacing: 3px; }
+  .topbar-brand .tagline { color: #2d3a52; font-size: 9px; letter-spacing: 1px; }
+  .tab { padding: 10px 20px; border-right: 1px solid #1a2040; font-size: 10px; letter-spacing: 2px; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+  .tab.active { color: #ff6b35; border-bottom: 2px solid #ff6b35; background: #0a0f1a; }
+  .tab.inactive { color: #2d3a52; }
+  .tab .dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+  .topbar-right { margin-left: auto; padding: 10px 16px; display: flex; align-items: center; gap: 16px; }
+  .live-badge { color: #00e676; font-size: 9px; display: flex; align-items: center; gap: 4px; }
+  .live-dot { width: 6px; height: 6px; border-radius: 50%; background: #00e676; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+  .stat-pill { color: #4fc3f7; font-size: 9px; background: #0d1a2a; padding: 3px 8px; border: 1px solid #1e3a5f; }
+
+  /* ── Stats bar ── */
+  .statsbar { background: #040608; border-bottom: 1px solid #0d1420; padding: 6px 16px; display: flex; gap: 24px; align-items: center; }
+  .stat { display: flex; flex-direction: column; gap: 1px; }
+  .stat-val { color: #ff6b35; font-size: 14px; font-weight: bold; }
+  .stat-val.green { color: #00e676; }
+  .stat-val.red { color: #ff3b3b; }
+  .stat-lbl { color: #2d3a52; font-size: 8px; letter-spacing: 1px; }
+  .statsbar-divider { width: 1px; height: 28px; background: #1a2040; }
+
+  /* ── Split panel ── */
+  .split-panel { display: flex; height: 420px; }
+
+  /* ── Signal list (left) ── */
+  .signal-list { width: 340px; border-right: 1px solid #1a2040; overflow-y: auto; flex-shrink: 0; }
+  .list-header { background: #040608; padding: 8px 12px; border-bottom: 1px solid #0d1420; display: flex; justify-content: space-between; align-items: center; }
+  .list-header-label { color: #2d3a52; font-size: 8px; letter-spacing: 2px; }
+  .filter-pills { display: flex; gap: 4px; }
+  .pill { font-size: 8px; padding: 2px 6px; border: 1px solid #1a2040; color: #2d3a52; cursor: pointer; }
+  .pill.active { border-color: #ff6b35; color: #ff6b35; }
+
+  .signal-row { padding: 10px 12px; border-bottom: 1px solid #0a0e18; cursor: pointer; display: flex; align-items: flex-start; gap: 10px; transition: background .1s; }
+  .signal-row:hover { background: #0a0f1a; }
+  .signal-row.selected { background: #0d1420; border-left: 2px solid #ff6b35; }
+  .signal-row.negation { background: #0d0808; }
+  .signal-row.negation.selected { border-left-color: #ff3b3b; }
+
+  .sim-score { width: 36px; flex-shrink: 0; }
+  .sim-bar-wrap { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+  .sim-num { color: #ff6b35; font-size: 12px; font-weight: bold; }
+  .sim-num.neg { color: #ff3b3b; }
+  .sim-bar { width: 28px; height: 3px; background: #1a2040; border-radius: 0; }
+  .sim-fill { height: 100%; background: #ff6b35; }
+  .sim-fill.neg { background: #ff3b3b; }
+
+  .signal-info { flex: 1; min-width: 0; }
+  .signal-markets { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
+  .mkt-tag { font-size: 8px; letter-spacing: 1px; padding: 1px 5px; }
+  .mkt-tag.poly { color: #4fc3f7; border: 1px solid #1e3a5f; }
+  .mkt-tag.kalshi { color: #ff9800; border: 1px solid #3a2a10; }
+  .mkt-tag.manifold { color: #c084fc; border: 1px solid #2d1a40; }
+  .arrow { color: #2d3a52; font-size: 9px; }
+  .signal-text { color: #94a3b8; font-size: 9px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.4; }
+  .signal-meta { display: flex; gap: 8px; margin-top: 4px; }
+  .spread-badge { font-size: 8px; }
+  .spread-badge.pos { color: #00e676; }
+  .spread-badge.big { color: #ff6b35; font-weight: bold; }
+  .neg-badge { color: #ff3b3b; font-size: 8px; background: #1a0808; padding: 1px 5px; border: 1px solid #3a1010; }
+
+  /* ── Detail panel (right) ── */
+  .detail-panel { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+  .detail-header { background: #040608; padding: 10px 16px; border-bottom: 1px solid #0d1420; display: flex; justify-content: space-between; align-items: center; }
+  .detail-title { color: #ff6b35; font-size: 9px; letter-spacing: 2px; }
+  .detail-score { display: flex; align-items: center; gap: 8px; }
+  .score-big { color: #ff6b35; font-size: 22px; font-weight: bold; }
+  .score-lbl { color: #2d3a52; font-size: 8px; }
+
+  .detail-body { padding: 16px; flex: 1; overflow-y: auto; }
+
+  /* similarity arc visual */
+  .sim-visual { display: flex; align-items: center; justify-content: center; margin-bottom: 20px; gap: 0; }
+  .question-block { flex: 1; background: #0a0f1a; border: 1px solid #1e3a5f; padding: 12px; }
+  .question-block.b { border-color: #3a2a10; }
+  .qb-market { font-size: 8px; letter-spacing: 1px; margin-bottom: 6px; }
+  .qb-market.poly { color: #4fc3f7; }
+  .qb-market.kalshi { color: #ff9800; }
+  .qb-text { color: #e2e8f0; font-size: 11px; line-height: 1.5; margin-bottom: 10px; }
+  .qb-price-row { display: flex; justify-content: space-between; align-items: center; }
+  .qb-price { font-size: 20px; font-weight: bold; }
+  .qb-price.poly { color: #4fc3f7; }
+  .qb-price.kalshi { color: #ff9800; }
+  .qb-vol { color: #2d3a52; font-size: 8px; }
+
+  .connector { width: 60px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; padding: 0 4px; }
+  .connector-score { color: #ff6b35; font-size: 11px; font-weight: bold; }
+  .connector-label { color: #2d3a52; font-size: 7px; letter-spacing: 1px; text-align: center; }
+  .connector-line { width: 100%; height: 1px; background: linear-gradient(to right, #1e3a5f, #ff6b35, #3a2a10); }
+
+  .detail-metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: #0d1420; border: 1px solid #0d1420; margin-bottom: 16px; }
+  .metric-cell { background: #060810; padding: 10px 12px; }
+  .metric-val { font-size: 16px; font-weight: bold; color: #ff6b35; margin-bottom: 2px; }
+  .metric-val.green { color: #00e676; }
+  .metric-val.red { color: #ff3b3b; }
+  .metric-val.blue { color: #4fc3f7; }
+  .metric-lbl { color: #2d3a52; font-size: 8px; letter-spacing: 1px; }
+
+  .neg-alert { background: #0d0808; border: 1px solid #3a1010; padding: 10px 14px; display: flex; align-items: center; gap: 10px; }
+  .neg-icon { color: #ff3b3b; font-size: 16px; }
+  .neg-text { flex: 1; }
+  .neg-title { color: #ff3b3b; font-size: 9px; letter-spacing: 1px; margin-bottom: 2px; }
+  .neg-desc { color: #7a4040; font-size: 9px; }
+  .neg-tokens { display: flex; gap: 4px; }
+  .neg-token { background: #1a0808; border: 1px solid #3a1010; color: #ff6b35; font-size: 8px; padding: 2px 6px; }
+
+  /* ── Status bar ── */
+  .statusbar { background: #040608; border-top: 1px solid #0d1420; padding: 5px 16px; display: flex; gap: 20px; align-items: center; }
+  .status-item { color: #2d3a52; font-size: 8px; letter-spacing: 1px; }
+  .status-item span { color: #4a5568; }
+  .status-item.ok span { color: #00e676; }
+
+  /* ── SCREEN 2: Markets ── */
+  .markets-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: #0d1420; padding: 16px; gap: 12px; }
+  .market-card { background: #0a0f1a; border: 1px solid #1e3a5f; padding: 14px; }
+  .market-card.kalshi { border-color: #3a2a10; }
+  .market-card.manifold { border-color: #2d1a40; }
+  .market-name { font-size: 10px; letter-spacing: 2px; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid #1a2040; }
+  .market-name.poly { color: #4fc3f7; }
+  .market-name.kalshi { color: #ff9800; }
+  .market-name.manifold { color: #c084fc; }
+  .market-stat-row { display: flex; justify-content: space-between; margin-bottom: 6px; }
+  .market-stat-val { color: #e2e8f0; font-size: 13px; font-weight: bold; }
+  .market-stat-lbl { color: #2d3a52; font-size: 8px; letter-spacing: 1px; }
+  .question-preview { margin-top: 10px; }
+  .q-prev-item { border-left: 1px solid #1a2040; padding: 4px 8px; margin-bottom: 4px; }
+  .q-prev-text { color: #4a5568; font-size: 8px; line-height: 1.4; }
+  .q-prev-price { color: #ff6b35; font-size: 8px; }
+
+  /* ── SCREEN 3: Pipeline ── */
+  .pipeline-layout { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; padding: 16px; }
+  .pipeline-step { background: #0a0f1a; border: 1px solid #1e3a5f; padding: 14px; }
+  .pipeline-step.done { border-color: #1a3a1a; }
+  .pipeline-step.active { border-color: #ff6b35; }
+  .pipeline-step.pending { border-color: #1a2040; opacity: 0.5; }
+  .step-num { font-size: 9px; letter-spacing: 2px; margin-bottom: 6px; }
+  .step-num.done { color: #00e676; }
+  .step-num.active { color: #ff6b35; }
+  .step-num.pending { color: #2d3a52; }
+  .step-name { font-size: 11px; font-weight: bold; margin-bottom: 8px; }
+  .step-name.done { color: #00e676; }
+  .step-name.active { color: #ff6b35; }
+  .step-name.pending { color: #2d3a52; }
+  .step-stat { color: #4a5568; font-size: 9px; line-height: 1.6; }
+  .step-badge { display: inline-block; font-size: 7px; padding: 2px 6px; margin-top: 6px; letter-spacing: 1px; }
+  .step-badge.done { background: #0d1a0d; border: 1px solid #1a3a1a; color: #00e676; }
+  .step-badge.active { background: #1a0f00; border: 1px solid #3a2a00; color: #ff6b35; }
+  .step-badge.pending { background: #0a0f1a; border: 1px solid #1a2040; color: #2d3a52; }
+
+  .section-divider { height: 1px; background: linear-gradient(to right, #ff6b35, transparent); margin: 24px 0 8px; }
+</style>
+</head>
+<body>
+
+<h1>ARBX — FULL DESIGN PREVIEW</h1>
+<p class="subtitle">Three screens · Orange Fire · Top Tabs · Split Panel</p>
+
+<!-- ═══════════════════════════════════════════════════════════ SCREEN 1 -->
+<div class="screen-label">SCREEN 1 / 3 — SIGNALS (PRIMARY)</div>
+<div class="terminal">
+
+  <!-- Top bar -->
+  <div class="topbar">
+    <div class="topbar-brand">
+      <span class="logo">ARBX</span>
+      <span class="tagline">PREDICTION MARKET ARB</span>
+    </div>
+    <div class="tab active"><span class="dot"></span>SIGNALS</div>
+    <div class="tab inactive">MARKETS</div>
+    <div class="tab inactive">PIPELINE</div>
+    <div class="topbar-right">
+      <div class="live-badge"><div class="live-dot"></div>LIVE</div>
+      <div class="stat-pill">17 CANDIDATES</div>
+      <div class="stat-pill">3 MARKETS</div>
+    </div>
+  </div>
+
+  <!-- Stats bar -->
+  <div class="statsbar">
+    <div class="stat"><div class="stat-val">17</div><div class="stat-lbl">CANDIDATES</div></div>
+    <div class="statsbar-divider"></div>
+    <div class="stat"><div class="stat-val green">9</div><div class="stat-lbl">HIGH CONF ≥0.90</div></div>
+    <div class="statsbar-divider"></div>
+    <div class="stat"><div class="stat-val red">2</div><div class="stat-lbl">NEGATION ⚠</div></div>
+    <div class="statsbar-divider"></div>
+    <div class="stat"><div class="stat-val">0.953</div><div class="stat-lbl">TOP SCORE</div></div>
+    <div class="statsbar-divider"></div>
+    <div class="stat"><div class="stat-val green">78pp</div><div class="stat-lbl">BEST SPREAD</div></div>
+    <div class="statsbar-divider"></div>
+    <div class="stat"><div class="stat-val" style="color:#4a5568">14:32:07</div><div class="stat-lbl">LAST RUN</div></div>
+  </div>
+
+  <!-- Split panel -->
+  <div class="split-panel">
+
+    <!-- Left: signal list -->
+    <div class="signal-list">
+      <div class="list-header">
+        <span class="list-header-label">RANKED BY SIMILARITY</span>
+        <div class="filter-pills">
+          <div class="pill active">ALL</div>
+          <div class="pill">⚠ NEG</div>
+          <div class="pill">HIGH</div>
+        </div>
+      </div>
+
+      <!-- Row 1 — selected -->
+      <div class="signal-row selected">
+        <div class="sim-score">
+          <div class="sim-bar-wrap">
+            <div class="sim-num">0.95</div>
+            <div class="sim-bar"><div class="sim-fill" style="width:95%"></div></div>
+          </div>
+        </div>
+        <div class="signal-info">
+          <div class="signal-markets">
+            <span class="mkt-tag poly">POLY</span>
+            <span class="arrow">→</span>
+            <span class="mkt-tag kalshi">KALSHI</span>
+          </div>
+          <div class="signal-text">Will the US enter a recession in 2025?</div>
+          <div class="signal-meta">
+            <span class="spread-badge pos">+3pp spread</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 2 — negation -->
+      <div class="signal-row negation">
+        <div class="sim-score">
+          <div class="sim-bar-wrap">
+            <div class="sim-num neg">0.95</div>
+            <div class="sim-bar"><div class="sim-fill neg" style="width:95%"></div></div>
+          </div>
+        </div>
+        <div class="signal-info">
+          <div class="signal-markets">
+            <span class="mkt-tag poly">POLY</span>
+            <span class="arrow">→</span>
+            <span class="mkt-tag kalshi">KALSHI</span>
+          </div>
+          <div class="signal-text">Will the Fed NOT raise rates in 2025?</div>
+          <div class="signal-meta">
+            <span class="neg-badge">⚠ NEGATION</span>
+            <span class="spread-badge big">+78pp</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 3 -->
+      <div class="signal-row">
+        <div class="sim-score">
+          <div class="sim-bar-wrap">
+            <div class="sim-num">0.95</div>
+            <div class="sim-bar"><div class="sim-fill" style="width:95%"></div></div>
+          </div>
+        </div>
+        <div class="signal-info">
+          <div class="signal-markets">
+            <span class="mkt-tag poly">POLY</span>
+            <span class="arrow">→</span>
+            <span class="mkt-tag manifold">MANIFOLD</span>
+          </div>
+          <div class="signal-text">Will Bitcoin exceed $150,000 by end of 2025?</div>
+          <div class="signal-meta">
+            <span class="spread-badge pos">+2pp spread</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 4 -->
+      <div class="signal-row">
+        <div class="sim-score">
+          <div class="sim-bar-wrap">
+            <div class="sim-num">0.91</div>
+            <div class="sim-bar"><div class="sim-fill" style="width:91%"></div></div>
+          </div>
+        </div>
+        <div class="signal-info">
+          <div class="signal-markets">
+            <span class="mkt-tag poly">POLY</span>
+            <span class="arrow">→</span>
+            <span class="mkt-tag kalshi">KALSHI</span>
+          </div>
+          <div class="signal-text">Will the US Senate pass immigration reform?</div>
+          <div class="signal-meta">
+            <span class="spread-badge pos">+5pp spread</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 5 -->
+      <div class="signal-row">
+        <div class="sim-score">
+          <div class="sim-bar-wrap">
+            <div class="sim-num">0.90</div>
+            <div class="sim-bar"><div class="sim-fill" style="width:90%"></div></div>
+          </div>
+        </div>
+        <div class="signal-info">
+          <div class="signal-markets">
+            <span class="mkt-tag poly">POLY</span>
+            <span class="arrow">→</span>
+            <span class="mkt-tag manifold">MANIFOLD</span>
+          </div>
+          <div class="signal-text">Will SpaceX Starship reach orbit in 2025?</div>
+          <div class="signal-meta">
+            <span class="spread-badge pos">+2pp spread</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 6 -->
+      <div class="signal-row">
+        <div class="sim-score">
+          <div class="sim-bar-wrap">
+            <div class="sim-num">0.87</div>
+            <div class="sim-bar"><div class="sim-fill" style="width:87%"></div></div>
+          </div>
+        </div>
+        <div class="signal-info">
+          <div class="signal-markets">
+            <span class="mkt-tag kalshi">KALSHI</span>
+            <span class="arrow">→</span>
+            <span class="mkt-tag manifold">MANIFOLD</span>
+          </div>
+          <div class="signal-text">Trump impeachment proceedings in 2025?</div>
+          <div class="signal-meta">
+            <span class="spread-badge pos">+1pp spread</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Right: detail panel -->
+    <div class="detail-panel">
+      <div class="detail-header">
+        <span class="detail-title">SIGNAL DETAIL</span>
+        <div class="detail-score">
+          <div>
+            <div class="score-big">0.953</div>
+            <div class="score-lbl">SIMILARITY</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-body">
+        <!-- Two questions side by side -->
+        <div class="sim-visual">
+          <div class="question-block">
+            <div class="qb-market poly">◈ POLYMARKET</div>
+            <div class="qb-text">Will the US enter a recession in 2025?</div>
+            <div class="qb-price-row">
+              <span class="qb-price poly">33%</span>
+              <span class="qb-vol">VOL $1.1M</span>
+            </div>
+          </div>
+          <div class="connector">
+            <div class="connector-line"></div>
+            <div class="connector-score">95%</div>
+            <div class="connector-label">MATCH</div>
+            <div class="connector-line"></div>
+          </div>
+          <div class="question-block b">
+            <div class="qb-market kalshi">◈ KALSHI</div>
+            <div class="qb-text">US recession by end of 2025?</div>
+            <div class="qb-price-row">
+              <span class="qb-price kalshi">30%</span>
+              <span class="qb-vol">VOL $900K</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Metrics grid -->
+        <div class="detail-metrics">
+          <div class="metric-cell">
+            <div class="metric-val">0.953</div>
+            <div class="metric-lbl">SIM SCORE</div>
+          </div>
+          <div class="metric-cell">
+            <div class="metric-val green">+3pp</div>
+            <div class="metric-lbl">PRICE SPREAD</div>
+          </div>
+          <div class="metric-cell">
+            <div class="metric-val blue">$2.0M</div>
+            <div class="metric-lbl">TOTAL VOLUME</div>
+          </div>
+          <div class="metric-cell">
+            <div class="metric-val" style="color:#c084fc">PENDING</div>
+            <div class="metric-lbl">STEP 3 STATUS</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Status bar -->
+  <div class="statusbar">
+    <div class="status-item ok">MODEL <span>all-mpnet-base-v2</span></div>
+    <div class="status-item ok">THRESHOLD <span>0.70</span></div>
+    <div class="status-item ok">MONGODB <span>CONNECTED</span></div>
+    <div class="status-item">MARKETS <span>POLY · KALSHI · MANIFOLD</span></div>
+    <div class="status-item ok">PIPELINE <span>READY</span></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ SCREEN 2 -->
+<div class="section-divider"></div>
+<div class="screen-label">SCREEN 2 / 3 — MARKETS</div>
+<div class="terminal">
+  <div class="topbar">
+    <div class="topbar-brand"><span class="logo">ARBX</span></div>
+    <div class="tab inactive">SIGNALS</div>
+    <div class="tab active"><span class="dot"></span>MARKETS</div>
+    <div class="tab inactive">PIPELINE</div>
+    <div class="topbar-right"><div class="live-badge"><div class="live-dot"></div>LIVE</div></div>
+  </div>
+  <div class="markets-grid">
+    <div class="market-card">
+      <div class="market-name poly">◈ POLYMARKET</div>
+      <div class="market-stat-row">
+        <div><div class="market-stat-val">3,241</div><div class="market-stat-lbl">ACTIVE MARKETS</div></div>
+        <div><div class="market-stat-val" style="color:#00e676">8</div><div class="market-stat-lbl">CANDIDATES FOUND</div></div>
+      </div>
+      <div class="question-preview">
+        <div class="q-prev-item">
+          <div class="q-prev-text">Will BTC exceed $150k by end of 2025?</div>
+          <div class="q-prev-price">p = 0.41</div>
+        </div>
+        <div class="q-prev-item">
+          <div class="q-prev-text">Will the US enter a recession in 2025?</div>
+          <div class="q-prev-price">p = 0.33</div>
+        </div>
+        <div class="q-prev-item">
+          <div class="q-prev-text">Will SpaceX Starship reach orbit?</div>
+          <div class="q-prev-price">p = 0.72</div>
+        </div>
+      </div>
+    </div>
+    <div class="market-card kalshi">
+      <div class="market-name kalshi">◈ KALSHI</div>
+      <div class="market-stat-row">
+        <div><div class="market-stat-val">1,890</div><div class="market-stat-lbl">ACTIVE MARKETS</div></div>
+        <div><div class="market-stat-val" style="color:#00e676">7</div><div class="market-stat-lbl">CANDIDATES FOUND</div></div>
+      </div>
+      <div class="question-preview">
+        <div class="q-prev-item">
+          <div class="q-prev-text">BTC surpasses $150k USD before Jan 2026?</div>
+          <div class="q-prev-price">p = 0.44</div>
+        </div>
+        <div class="q-prev-item">
+          <div class="q-prev-text">US recession by end of 2025?</div>
+          <div class="q-prev-price">p = 0.30</div>
+        </div>
+        <div class="q-prev-item">
+          <div class="q-prev-text">Federal Reserve rate cut before April 2025?</div>
+          <div class="q-prev-price">p = 0.35</div>
+        </div>
+      </div>
+    </div>
+    <div class="market-card manifold">
+      <div class="market-name manifold">◈ MANIFOLD</div>
+      <div class="market-stat-row">
+        <div><div class="market-stat-val">892</div><div class="market-stat-lbl">ACTIVE MARKETS</div></div>
+        <div><div class="market-stat-val" style="color:#00e676">5</div><div class="market-stat-lbl">CANDIDATES FOUND</div></div>
+      </div>
+      <div class="question-preview">
+        <div class="q-prev-item">
+          <div class="q-prev-text">Does Bitcoin top $150,000 during 2025?</div>
+          <div class="q-prev-price">p = 0.39</div>
+        </div>
+        <div class="q-prev-item">
+          <div class="q-prev-text">Will there be a US recession in 2025?</div>
+          <div class="q-prev-price">p = 0.35</div>
+        </div>
+        <div class="q-prev-item">
+          <div class="q-prev-text">Will Elon Musk leave Tesla CEO role?</div>
+          <div class="q-prev-price">p = 0.22</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="statusbar">
+    <div class="status-item ok">LAST SCRAPE <span>14:32:07</span></div>
+    <div class="status-item ok">NEXT RUN <span>14:42:07</span></div>
+    <div class="status-item ok">TOTAL QUESTIONS <span>6,023</span></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ SCREEN 3 -->
+<div class="section-divider"></div>
+<div class="screen-label">SCREEN 3 / 3 — PIPELINE STATUS</div>
+<div class="terminal">
+  <div class="topbar">
+    <div class="topbar-brand"><span class="logo">ARBX</span></div>
+    <div class="tab inactive">SIGNALS</div>
+    <div class="tab inactive">MARKETS</div>
+    <div class="tab active"><span class="dot"></span>PIPELINE</div>
+    <div class="topbar-right"><div class="live-badge"><div class="live-dot"></div>LIVE</div></div>
+  </div>
+  <div class="pipeline-layout">
+    <div class="pipeline-step done">
+      <div class="step-num done">STEP 01</div>
+      <div class="step-name done">SCRAPER</div>
+      <div class="step-stat">6,023 questions<br>3 markets<br>Last run 14:32</div>
+      <div class="step-badge done">✓ COMPLETE</div>
+    </div>
+    <div class="pipeline-step active">
+      <div class="step-num active">STEP 02</div>
+      <div class="step-name active">VECTOR DB</div>
+      <div class="step-stat">768-dim embeddings<br>17 candidates<br>F1 = 0.926</div>
+      <div class="step-badge active">● RUNNING</div>
+    </div>
+    <div class="pipeline-step done">
+      <div class="step-num done">STEP 03</div>
+      <div class="step-name done">LLM VERIFY</div>
+      <div class="step-stat">17 in queue<br>2 negation flagged<br>Gemini 1.5 Pro</div>
+      <div class="step-badge done">✓ COMPLETE</div>
+    </div>
+    <div class="pipeline-step pending">
+      <div class="step-num pending">STEP 04</div>
+      <div class="step-name pending">ARB CALC</div>
+      <div class="step-stat">Kelly criterion<br>Max position size<br>—</div>
+      <div class="step-badge pending">○ PENDING</div>
+    </div>
+    <div class="pipeline-step pending">
+      <div class="step-num pending">STEP 05</div>
+      <div class="step-name pending">TIMING</div>
+      <div class="step-stat">Market close times<br>Liquidity windows<br>—</div>
+      <div class="step-badge pending">○ PENDING</div>
+    </div>
+    <div class="pipeline-step pending">
+      <div class="step-num pending">STEP 06</div>
+      <div class="step-name pending">SIMULATOR</div>
+      <div class="step-stat">Historical backtest<br>P&amp;L curve<br>—</div>
+      <div class="step-badge pending">○ PENDING</div>
+    </div>
+    <div class="pipeline-step active">
+      <div class="step-num active">STEP 07</div>
+      <div class="step-name active">FRONTEND</div>
+      <div class="step-stat">Next.js 14<br>FastAPI backend<br>Building now</div>
+      <div class="step-badge active">● IN PROGRESS</div>
+    </div>
+  </div>
+  <div class="statusbar">
+    <div class="status-item ok">MONGODB <span>CONNECTED</span></div>
+    <div class="status-item ok">API <span>RUNNING :8000</span></div>
+    <div class="status-item ok">FRONTEND <span>RUNNING :3000</span></div>
+  </div>
+</div>
+
+</body>
+</html>

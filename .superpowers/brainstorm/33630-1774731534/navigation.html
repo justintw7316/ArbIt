@@ -1,0 +1,111 @@
+<h2>Navigation between screens</h2>
+<p class="subtitle">How do you move between Signal Board, Market Feed, and Pipeline Status?</p>
+
+<div class="cards">
+
+  <div class="card" data-choice="A" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#060810;font-family:'Courier New',monospace;border-bottom:1px solid #1a2040;overflow:hidden">
+      <!-- Top tab bar -->
+      <div style="background:#060810;border-bottom:1px solid #1a2040;display:flex;align-items:stretch">
+        <div style="padding:8px 14px;border-right:1px solid #1a2040;display:flex;align-items:center;gap:6px">
+          <span style="color:#ff6b35;font-size:9px;font-weight:bold;letter-spacing:2px">ARBX</span>
+        </div>
+        <div style="padding:8px 14px;border-right:1px solid #ff6b35;border-bottom:2px solid #ff6b35;background:#0d1117">
+          <span style="color:#ff6b35;font-size:8px;letter-spacing:1px">SIGNALS</span>
+        </div>
+        <div style="padding:8px 14px;border-right:1px solid #1a2040">
+          <span style="color:#4a5568;font-size:8px;letter-spacing:1px">MARKETS</span>
+        </div>
+        <div style="padding:8px 14px;border-right:1px solid #1a2040">
+          <span style="color:#4a5568;font-size:8px;letter-spacing:1px">PIPELINE</span>
+        </div>
+        <div style="margin-left:auto;padding:8px 12px;display:flex;align-items:center">
+          <span style="color:#00e676;font-size:7px">● LIVE</span>
+        </div>
+      </div>
+      <div style="padding:10px 12px">
+        <div style="color:#4a5568;font-size:8px;margin-bottom:6px">Signal board content below tabs...</div>
+        <div style="background:#0d1117;border-left:2px solid #ff6b35;padding:5px 8px;margin-bottom:3px">
+          <div style="color:#fff;font-size:8px">BTC $150k  <span style="color:#ff6b35">0.95</span></div>
+        </div>
+        <div style="background:#0d1117;border-left:2px solid #ff6b35;padding:5px 8px;opacity:0.5">
+          <div style="color:#fff;font-size:8px">US Recession  <span style="color:#ff6b35">0.93</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>Top Tab Bar</h3>
+      <p>Classic terminal tabs across the top. Active tab underlined in orange. Clean, familiar, maximises vertical space for data.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="B" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#060810;font-family:'Courier New',monospace;border-bottom:1px solid #1a2040;overflow:hidden;display:flex;min-height:180px">
+      <!-- Left sidebar -->
+      <div style="width:80px;border-right:1px solid #1a2040;padding:10px 0;display:flex;flex-direction:column;gap:2px">
+        <div style="padding:8px 10px;margin:0 4px;background:#0d1117;border-left:2px solid #ff6b35">
+          <div style="color:#ff6b35;font-size:7px;letter-spacing:1px">SIGNALS</div>
+          <div style="color:#ff6b35;font-size:10px;margin-top:2px">⚡</div>
+        </div>
+        <div style="padding:8px 10px;margin:0 4px">
+          <div style="color:#4a5568;font-size:7px;letter-spacing:1px">MARKETS</div>
+          <div style="color:#4a5568;font-size:10px;margin-top:2px">◎</div>
+        </div>
+        <div style="padding:8px 10px;margin:0 4px">
+          <div style="color:#4a5568;font-size:7px;letter-spacing:1px">PIPELINE</div>
+          <div style="color:#4a5568;font-size:10px;margin-top:2px">⬡</div>
+        </div>
+        <div style="margin-top:auto;padding:8px 10px">
+          <div style="color:#00e676;font-size:7px">● LIVE</div>
+        </div>
+      </div>
+      <!-- Content -->
+      <div style="flex:1;padding:10px">
+        <div style="color:#ff6b35;font-size:8px;letter-spacing:2px;margin-bottom:8px">ARBX TERMINAL</div>
+        <div style="background:#0d1117;border-left:2px solid #ff6b35;padding:5px 8px;margin-bottom:3px">
+          <div style="color:#fff;font-size:8px">BTC $150k  <span style="color:#ff6b35">0.95</span></div>
+        </div>
+        <div style="background:#0d1117;border-left:2px solid #ff6b35;padding:5px 8px;opacity:0.5">
+          <div style="color:#fff;font-size:8px">US Recession  <span style="color:#ff6b35">0.93</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>Left Sidebar</h3>
+      <p>Icon + label sidebar. Always visible. Feels like a pro trading terminal (Think: TradingView, Bloomberg). Active item highlighted orange.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="C" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#060810;font-family:'Courier New',monospace;border-bottom:1px solid #1a2040;overflow:hidden;min-height:180px">
+      <!-- Full-width header + hotkey nav -->
+      <div style="background:#060810;border-bottom:1px solid #ff6b3530;padding:8px 12px;display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <span style="color:#ff6b35;font-size:11px;font-weight:bold;letter-spacing:3px">ARBX</span>
+          <span style="color:#4a5568;font-size:8px;margin-left:8px">PREDICTION MARKET ARBITRAGE</span>
+        </div>
+        <div style="color:#00e676;font-size:7px">● LIVE  93 SIGNALS</div>
+      </div>
+      <!-- Hotkey bar -->
+      <div style="background:#040608;border-bottom:1px solid #1a2040;padding:5px 12px;display:flex;gap:16px">
+        <span style="color:#ff6b35;font-size:8px"><span style="background:#ff6b35;color:#000;padding:1px 4px;font-size:7px;margin-right:4px">F1</span>SIGNALS</span>
+        <span style="color:#4a5568;font-size:8px"><span style="background:#1a2040;color:#4a5568;padding:1px 4px;font-size:7px;margin-right:4px">F2</span>MARKETS</span>
+        <span style="color:#4a5568;font-size:8px"><span style="background:#1a2040;color:#4a5568;padding:1px 4px;font-size:7px;margin-right:4px">F3</span>PIPELINE</span>
+      </div>
+      <div style="padding:10px 12px">
+        <div style="background:#0d1117;border-left:2px solid #ff6b35;padding:5px 8px;margin-bottom:3px">
+          <div style="color:#fff;font-size:8px">BTC $150k  <span style="color:#ff6b35">0.95</span></div>
+        </div>
+        <div style="background:#0d1117;border-left:2px solid #ff6b35;padding:5px 8px;opacity:0.5">
+          <div style="color:#fff;font-size:8px">US Recession  <span style="color:#ff6b35">0.93</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>Hotkey Bar</h3>
+      <p>F1/F2/F3 keyboard shortcuts shown in a command bar below the header. Ultra-terminal feel — looks like you're running a real trading system.</p>
+    </div>
+  </div>
+
+</div>
+<p class="subtitle" style="margin-top:16px">Click one, then tell me in the terminal.</p>

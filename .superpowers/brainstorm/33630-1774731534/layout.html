@@ -1,0 +1,129 @@
+<h2>Main signal board layout</h2>
+<p class="subtitle">How should the arbitrage candidates be displayed on the primary screen?</p>
+
+<div class="cards">
+
+  <div class="card" data-choice="A" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#060810;padding:12px;font-family:'Courier New',monospace;border-bottom:1px solid #1a2040;min-height:200px">
+      <!-- Layout A: Live ticker feed -->
+      <div style="color:#ff6b35;font-size:8px;letter-spacing:3px;margin-bottom:8px;border-bottom:1px solid #1a2040;padding-bottom:6px">ARBX // LIVE SIGNAL FEED</div>
+      <!-- Row 1 -->
+      <div style="background:#0d1117;border-left:3px solid #ff6b35;padding:6px 8px;margin-bottom:4px;display:flex;align-items:center;gap:8px">
+        <div style="color:#ff6b35;font-size:9px;font-weight:bold;width:28px">0.95</div>
+        <div style="flex:1">
+          <div style="color:#fff;font-size:9px">Will BTC exceed $150k?  <span style="color:#4fc3f7">POLY</span> 0.41 ↔ <span style="color:#ff9800">KALSHI</span> 0.44</div>
+        </div>
+        <div style="color:#00e676;font-size:8px">+3pp</div>
+      </div>
+      <!-- Row 2 -->
+      <div style="background:#0d1117;border-left:3px solid #ff6b35;padding:6px 8px;margin-bottom:4px;display:flex;align-items:center;gap:8px">
+        <div style="color:#ff6b35;font-size:9px;font-weight:bold;width:28px">0.93</div>
+        <div style="flex:1">
+          <div style="color:#fff;font-size:9px">US recession in 2025?  <span style="color:#4fc3f7">POLY</span> 0.33 ↔ <span style="color:#ff9800">KALSHI</span> 0.30</div>
+        </div>
+        <div style="color:#00e676;font-size:8px">+3pp</div>
+      </div>
+      <!-- Row 3 negation -->
+      <div style="background:#1a0a00;border-left:3px solid #ff3b3b;padding:6px 8px;margin-bottom:4px;display:flex;align-items:center;gap:8px">
+        <div style="color:#ff3b3b;font-size:9px;font-weight:bold;width:28px">0.95</div>
+        <div style="flex:1">
+          <div style="color:#fff;font-size:9px">⚠ Fed NOT raise rates?  <span style="color:#4fc3f7">POLY</span> 0.88 ↔ <span style="color:#ff9800">KALSHI</span> 0.10</div>
+        </div>
+        <div style="color:#ff3b3b;font-size:8px">+78pp</div>
+      </div>
+      <div style="color:#888;font-size:8px;margin-top:6px">↑ Scrollable feed • newest at top • auto-refresh 30s</div>
+    </div>
+    <div class="card-body">
+      <h3>Ticker Feed</h3>
+      <p>Dense scrollable rows, one pair per line. Like a stock ticker. Highest similarity at top. Negation rows highlighted red. Instant scanability.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="B" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#060810;padding:12px;font-family:'Courier New',monospace;border-bottom:1px solid #1a2040;min-height:200px">
+      <!-- Layout B: Card grid -->
+      <div style="color:#ff6b35;font-size:8px;letter-spacing:3px;margin-bottom:8px">ARBX // SIGNAL BOARD</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+        <!-- Card 1 -->
+        <div style="background:#0d1117;border:1px solid #1e3a5f;border-top:2px solid #ff6b35;padding:8px">
+          <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+            <span style="color:#ff6b35;font-size:9px;font-weight:bold">SIM 0.95</span>
+            <span style="color:#00e676;font-size:9px">+3pp</span>
+          </div>
+          <div style="color:#4fc3f7;font-size:7px;letter-spacing:1px;margin-bottom:2px">POLYMARKET → KALSHI</div>
+          <div style="color:#fff;font-size:8px;line-height:1.3;margin-bottom:4px">Will BTC exceed $150k by end of 2025?</div>
+          <div style="color:#fff;font-size:8px;line-height:1.3;opacity:0.7">BTC surpasses $150k USD before Jan 2026?</div>
+          <div style="display:flex;justify-content:space-between;margin-top:6px;border-top:1px solid #1a2040;padding-top:4px">
+            <span style="color:#4fc3f7;font-size:8px">0.41</span>
+            <span style="color:#ff9800;font-size:8px">0.44</span>
+          </div>
+        </div>
+        <!-- Card 2 negation -->
+        <div style="background:#100808;border:1px solid #3a1e1e;border-top:2px solid #ff3b3b;padding:8px">
+          <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+            <span style="color:#ff3b3b;font-size:9px;font-weight:bold">⚠ NEG 0.95</span>
+            <span style="color:#ff3b3b;font-size:9px">+78pp</span>
+          </div>
+          <div style="color:#4fc3f7;font-size:7px;letter-spacing:1px;margin-bottom:2px">POLYMARKET → KALSHI</div>
+          <div style="color:#fff;font-size:8px;line-height:1.3;margin-bottom:4px">Will Fed NOT raise rates?</div>
+          <div style="color:#fff;font-size:8px;line-height:1.3;opacity:0.7">Will Fed raise interest rates?</div>
+          <div style="display:flex;justify-content:space-between;margin-top:6px;border-top:1px solid #3a1e1e;padding-top:4px">
+            <span style="color:#4fc3f7;font-size:8px">0.88</span>
+            <span style="color:#ff9800;font-size:8px">0.10</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>Signal Cards</h3>
+      <p>2-column card grid. Each pair gets its own card with both question texts, prices, similarity and spread. More detail per signal, slightly less density.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="C" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#060810;padding:12px;font-family:'Courier New',monospace;border-bottom:1px solid #1a2040;min-height:200px">
+      <!-- Layout C: Split panel -->
+      <div style="color:#ff6b35;font-size:8px;letter-spacing:3px;margin-bottom:8px">ARBX // MONITOR</div>
+      <div style="display:flex;gap:6px;height:160px">
+        <!-- Left: signal list -->
+        <div style="width:45%;border:1px solid #1e3a5f;overflow:hidden">
+          <div style="background:#0d1420;padding:4px 6px;color:#4fc3f7;font-size:7px;letter-spacing:1px">CANDIDATES</div>
+          <div style="background:#ff6b3520;padding:5px 6px;border-left:2px solid #ff6b35">
+            <div style="color:#fff;font-size:8px">BTC $150k</div>
+            <div style="color:#ff6b35;font-size:7px">0.95 · +3pp</div>
+          </div>
+          <div style="padding:5px 6px;border-left:2px solid transparent">
+            <div style="color:#aaa;font-size:8px">US Recession</div>
+            <div style="color:#888;font-size:7px">0.93 · +3pp</div>
+          </div>
+          <div style="padding:5px 6px;border-left:2px solid #ff3b3b">
+            <div style="color:#aaa;font-size:8px">⚠ Fed Rates</div>
+            <div style="color:#ff3b3b;font-size:7px">0.95 · +78pp</div>
+          </div>
+        </div>
+        <!-- Right: detail panel -->
+        <div style="flex:1;border:1px solid #1e3a5f;padding:8px">
+          <div style="color:#ff6b35;font-size:7px;letter-spacing:1px;margin-bottom:6px">SELECTED SIGNAL</div>
+          <div style="background:#0d1117;padding:6px;margin-bottom:4px">
+            <div style="color:#4fc3f7;font-size:7px">POLYMARKET  p=0.41</div>
+            <div style="color:#fff;font-size:8px;margin-top:2px">Will Bitcoin exceed $150k by end of 2025?</div>
+          </div>
+          <div style="background:#0d1117;padding:6px">
+            <div style="color:#ff9800;font-size:7px">KALSHI  p=0.44</div>
+            <div style="color:#fff;font-size:8px;margin-top:2px">BTC surpasses $150k USD before Jan 2026?</div>
+          </div>
+          <div style="margin-top:6px;display:flex;justify-content:space-between">
+            <span style="color:#888;font-size:7px">SIM: 0.9118</span>
+            <span style="color:#00e676;font-size:7px">SPREAD: +3pp</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>Split Panel</h3>
+      <p>Left list of candidates, right detail pane updates on click. Master-detail pattern. Best for deeper inspection of individual signals during a live demo.</p>
+    </div>
+  </div>
+
+</div>
+<p class="subtitle" style="margin-top:16px">Click one, then tell me in the terminal.</p>

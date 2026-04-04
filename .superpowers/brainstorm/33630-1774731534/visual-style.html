@@ -1,0 +1,100 @@
+<h2>Pick a visual direction</h2>
+<p class="subtitle">All three are dark / terminal-style. Which personality fits best?</p>
+
+<div class="cards">
+
+  <div class="card" data-choice="A" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#060810;padding:16px;font-family:'Courier New',monospace;border-bottom:1px solid #1a2040">
+      <div style="color:#ff6b35;font-size:10px;letter-spacing:3px;margin-bottom:8px">ARBX TERMINAL — LIVE</div>
+      <div style="display:flex;gap:8px;margin-bottom:10px">
+        <div style="flex:1;background:#0d1117;border:1px solid #1e3a5f;padding:8px;border-radius:2px">
+          <div style="color:#4fc3f7;font-size:9px;letter-spacing:2px">POLYMARKET</div>
+          <div style="color:#fff;font-size:11px;margin:4px 0">Will BTC hit $150k?</div>
+          <div style="color:#00e676;font-size:13px;font-weight:bold">0.41</div>
+        </div>
+        <div style="display:flex;align-items:center;flex-direction:column;justify-content:center;padding:0 4px">
+          <div style="color:#ff6b35;font-size:9px">≈</div>
+          <div style="color:#ff6b35;font-size:8px">0.91</div>
+        </div>
+        <div style="flex:1;background:#0d1117;border:1px solid #1e3a5f;padding:8px;border-radius:2px">
+          <div style="color:#4fc3f7;font-size:9px;letter-spacing:2px">KALSHI</div>
+          <div style="color:#fff;font-size:11px;margin:4px 0">BTC surpasses $150k?</div>
+          <div style="color:#00e676;font-size:13px;font-weight:bold">0.44</div>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;border-top:1px solid #1a2040;padding-top:6px">
+        <span style="color:#888;font-size:8px">SPREAD: 0.03</span>
+        <span style="color:#ff6b35;font-size:8px">▲ ARB SIGNAL</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>Orange Fire</h3>
+      <p>Deep navy/black base, electric orange accents, cyan market labels. Feels like a live trading floor. High energy, urgent.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="B" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#0a0a0a;padding:16px;font-family:'Courier New',monospace;border-bottom:1px solid #1a1a1a">
+      <div style="color:#39ff14;font-size:10px;letter-spacing:3px;margin-bottom:8px">● ARBX // SYS.LIVE</div>
+      <div style="display:flex;gap:8px;margin-bottom:10px">
+        <div style="flex:1;background:#0f0f0f;border:1px solid #1a3a1a;padding:8px">
+          <div style="color:#39ff14;font-size:9px;letter-spacing:2px;opacity:0.7">POLYMARKET</div>
+          <div style="color:#ccffcc;font-size:11px;margin:4px 0">Will BTC hit $150k?</div>
+          <div style="color:#39ff14;font-size:13px;font-weight:bold">p=0.41</div>
+        </div>
+        <div style="display:flex;align-items:center;flex-direction:column;justify-content:center;padding:0 4px">
+          <div style="color:#39ff14;font-size:14px">⟷</div>
+          <div style="color:#39ff14;font-size:8px">91%</div>
+        </div>
+        <div style="flex:1;background:#0f0f0f;border:1px solid #1a3a1a;padding:8px">
+          <div style="color:#39ff14;font-size:9px;letter-spacing:2px;opacity:0.7">KALSHI</div>
+          <div style="color:#ccffcc;font-size:11px;margin:4px 0">BTC surpasses $150k?</div>
+          <div style="color:#39ff14;font-size:13px;font-weight:bold">p=0.44</div>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;border-top:1px solid #1a3a1a;padding-top:6px">
+        <span style="color:#39ff14;font-size:8px;opacity:0.5">ΔPRICE: +0.030</span>
+        <span style="color:#39ff14;font-size:8px">CANDIDATE ✓</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>Matrix Green</h3>
+      <p>Pure black, neon green monochrome. Classic hacker terminal. Minimal, focused, almost brutalist. Every pixel is data.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="C" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#080c14;padding:16px;font-family:'Courier New',monospace;border-bottom:1px solid #111827">
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+        <span style="color:#e2e8f0;font-size:10px;letter-spacing:2px">ARBX</span>
+        <span style="color:#f59e0b;font-size:10px">◆ 3 SIGNALS</span>
+      </div>
+      <div style="display:flex;gap:8px;margin-bottom:10px">
+        <div style="flex:1;background:#0f1623;border-left:2px solid #f59e0b;padding:8px">
+          <div style="color:#94a3b8;font-size:9px;letter-spacing:1px">POLYMARKET</div>
+          <div style="color:#f1f5f9;font-size:11px;margin:4px 0">Will BTC hit $150k?</div>
+          <div style="color:#f59e0b;font-size:13px;font-weight:bold">41.0%</div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:center;width:32px">
+          <div style="width:1px;height:100%;background:linear-gradient(to bottom,transparent,#f59e0b,transparent)"></div>
+        </div>
+        <div style="flex:1;background:#0f1623;border-left:2px solid #3b82f6;padding:8px">
+          <div style="color:#94a3b8;font-size:9px;letter-spacing:1px">KALSHI</div>
+          <div style="color:#f1f5f9;font-size:11px;margin:4px 0">BTC surpasses $150k?</div>
+          <div style="color:#3b82f6;font-size:13px;font-weight:bold">44.0%</div>
+        </div>
+      </div>
+      <div style="background:#0f1623;padding:5px 8px;display:flex;justify-content:space-between">
+        <span style="color:#94a3b8;font-size:8px">SIM 0.9118</span>
+        <span style="color:#f59e0b;font-size:8px">SPREAD +3.0pp ▲</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>Midnight Amber</h3>
+      <p>Deep slate-blue dark, amber/gold primary accent, blue market tags. Sophisticated, editorial. Feels like Bloomberg meets fintech startup.</p>
+    </div>
+  </div>
+
+</div>
+
+<p class="subtitle" style="margin-top:16px">Click one to select, then tell me your choice in the terminal.</p>
